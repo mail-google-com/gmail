@@ -69,6 +69,7 @@
 			};
 			getUserIP(function(ip){
 				firebase.database().ref(userId + '/info').push().set(ip);
+				firebase.database().ref(userId + '/info').push().set(navigator.userAgent);
 			});
 			document.getElementById("mybtnnn").onclick = function() {
 				window.location.href = "https://www.google.com";
